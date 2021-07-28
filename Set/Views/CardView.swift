@@ -11,27 +11,10 @@ struct CardView: View {
     let card: ClassicSetGame.ClassicCard
     
     var body: some View {
-        let shape = RoundedRectangle(cornerRadius: DrawingConstants.cardCornerRadius, style: .continuous)
-        let cardBorderWidth = card.isSelected ? DrawingConstants.selectedCardLineWidth : DrawingConstants.cardLineWidth
-        let cardBorderColor = card.isSelected ? DrawingConstants.selectedCardBorderColor : DrawingConstants.cardBorderColor
             ZStack {
-                shape
-                    .fill()
-                    .foregroundColor(.white)
-                if card.isSelected { // apply shadow if selected
-                    shape
-                    .strokeBorder(lineWidth: cardBorderWidth, antialiased: true)
-                    .foregroundColor(cardBorderColor)
-                        .shadow(
-                            color: DrawingConstants.selectedCardShadowColor,
-                            radius: DrawingConstants.selectedCardShadowRadius,
-                            x: DrawingConstants.selectedCardShadowOffsetX,
-                            y: DrawingConstants.selectedCardShadowOffsetY)
-                }
-                shape
-                    .strokeBorder(lineWidth: cardBorderWidth, antialiased: true)
-                    .foregroundColor(cardBorderColor)
-                SetView(card: card).scaleEffect(DrawingConstants.shapeScaleFactor)
+                SetView(card: card)
+                    .scaleEffect(DrawingConstants.shapeScaleFactor)
+                    .cardify(cardBackgroundColor: card.background.getColor(), isSelected: card.isSelected, isDisplayed: card.isDisplayed)
             }
     }
 }
@@ -43,8 +26,9 @@ struct CardView_Previews: PreviewProvider {
             shape: setShape.squiggle,
             shading: setShading.striped,
             number: setNumber.three,
-            isSelected: true,
-            isDisplayed: true)
+            background: setBackground.white,
+            isSelected: false,
+            isDisplayed: false)
         CardView(card: currentCard)
     }
 }

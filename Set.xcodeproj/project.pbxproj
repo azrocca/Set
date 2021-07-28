@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D920DE2D26A2396800C6136C /* DifficultyMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE2C26A2396800C6136C /* DifficultyMenu.swift */; };
+		D920DE2F26A23DD100C6136C /* DifficultyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE2E26A23DD100C6136C /* DifficultyButton.swift */; };
+		D920DE3126A2440900C6136C /* DifficultyButtonBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3026A2440900C6136C /* DifficultyButtonBackground.swift */; };
+		D920DE3326A35D7D00C6136C /* AnimationTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3226A35D7D00C6136C /* AnimationTester.swift */; };
+		D920DE3526A36A7700C6136C /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3426A36A7700C6136C /* Cardify.swift */; };
 		D9BB667D2697DECF0006D3EA /* SetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB667C2697DECF0006D3EA /* SetApp.swift */; };
 		D9BB667F2697DECF0006D3EA /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB667E2697DECF0006D3EA /* GameView.swift */; };
 		D9BB66812697DED00006D3EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9BB66802697DED00006D3EA /* Assets.xcassets */; };
@@ -23,9 +28,16 @@
 		D9BB66A1269C10EF0006D3EA /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB66A0269C10EF0006D3EA /* DrawingConstants.swift */; };
 		D9BB66A3269C16D20006D3EA /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB66A2269C16D20006D3EA /* AspectVGrid.swift */; };
 		D9BB66A6269CD87E0006D3EA /* ClassicSetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB66A5269CD87E0006D3EA /* ClassicSetGame.swift */; };
+		D9D0AF5026A79C04008E533F /* CardAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D0AF4F26A79C04008E533F /* CardAnimation.swift */; };
+		D9D0AF5226AF868A008E533F /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D0AF5126AF868A008E533F /* UtilityExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D920DE2C26A2396800C6136C /* DifficultyMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyMenu.swift; sourceTree = "<group>"; };
+		D920DE2E26A23DD100C6136C /* DifficultyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyButton.swift; sourceTree = "<group>"; };
+		D920DE3026A2440900C6136C /* DifficultyButtonBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyButtonBackground.swift; sourceTree = "<group>"; };
+		D920DE3226A35D7D00C6136C /* AnimationTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTester.swift; sourceTree = "<group>"; };
+		D920DE3426A36A7700C6136C /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 		D9BB66792697DECF0006D3EA /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB667C2697DECF0006D3EA /* SetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetApp.swift; sourceTree = "<group>"; };
 		D9BB667E2697DECF0006D3EA /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -44,6 +56,8 @@
 		D9BB66A0269C10EF0006D3EA /* DrawingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingConstants.swift; sourceTree = "<group>"; };
 		D9BB66A2269C16D20006D3EA /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 		D9BB66A5269CD87E0006D3EA /* ClassicSetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicSetGame.swift; sourceTree = "<group>"; };
+		D9D0AF4F26A79C04008E533F /* CardAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnimation.swift; sourceTree = "<group>"; };
+		D9D0AF5126AF868A008E533F /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +112,15 @@
 		D9BB66912697ECC50006D3EA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D920DE3426A36A7700C6136C /* Cardify.swift */,
+				D9D0AF4F26A79C04008E533F /* CardAnimation.swift */,
+				D920DE2C26A2396800C6136C /* DifficultyMenu.swift */,
+				D920DE3026A2440900C6136C /* DifficultyButtonBackground.swift */,
+				D920DE2E26A23DD100C6136C /* DifficultyButton.swift */,
 				D9BB667E2697DECF0006D3EA /* GameView.swift */,
+				D9D0AF5126AF868A008E533F /* UtilityExtensions.swift */,
 				D9BB669E269C10110006D3EA /* CardView.swift */,
+				D920DE3226A35D7D00C6136C /* AnimationTester.swift */,
 				D9BB66A2269C16D20006D3EA /* AspectVGrid.swift */,
 				D9BB66972698D1F30006D3EA /* SetView.swift */,
 				D9BB66A0269C10EF0006D3EA /* DrawingConstants.swift */,
@@ -206,20 +227,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9D0AF5026A79C04008E533F /* CardAnimation.swift in Sources */,
+				D920DE2F26A23DD100C6136C /* DifficultyButton.swift in Sources */,
 				D9BB669A2698D7260006D3EA /* SetEnums.swift in Sources */,
 				D9BB66902697ECC00006D3EA /* Squiggle.swift in Sources */,
 				D9BB669D269BBBCC0006D3EA /* SetGame.swift in Sources */,
 				D9BB668C2697DEE80006D3EA /* Diamond.swift in Sources */,
 				D9BB669426982CA80006D3EA /* SquiggleParameters.swift in Sources */,
+				D920DE3126A2440900C6136C /* DifficultyButtonBackground.swift in Sources */,
+				D920DE3326A35D7D00C6136C /* AnimationTester.swift in Sources */,
 				D9BB667F2697DECF0006D3EA /* GameView.swift in Sources */,
+				D920DE2D26A2396800C6136C /* DifficultyMenu.swift in Sources */,
 				D9BB667D2697DECF0006D3EA /* SetApp.swift in Sources */,
 				D9BB66A6269CD87E0006D3EA /* ClassicSetGame.swift in Sources */,
 				D9BB66962698C32F0006D3EA /* Line.swift in Sources */,
 				D9BB668E2697E3510006D3EA /* Oval.swift in Sources */,
 				D9BB669F269C10110006D3EA /* CardView.swift in Sources */,
 				D9BB66A1269C10EF0006D3EA /* DrawingConstants.swift in Sources */,
+				D9D0AF5226AF868A008E533F /* UtilityExtensions.swift in Sources */,
 				D9BB66982698D1F30006D3EA /* SetView.swift in Sources */,
 				D9BB66A3269C16D20006D3EA /* AspectVGrid.swift in Sources */,
+				D920DE3526A36A7700C6136C /* Cardify.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

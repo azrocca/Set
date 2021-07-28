@@ -71,4 +71,5 @@ struct SetGame<CardContent> where CardContent: Equatable {
             cards[cardIndex].content = newContent
         }
     }
+    
 }

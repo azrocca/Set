@@ -34,16 +34,17 @@ enum setShading: Int, CaseIterable {
     case open = -1, solid, striped
 }
 
-//struct Trool: Hashable {
-//    var storedValue: Int?
-//    var value: Int?
-//    {
-//        set {
-//            storedValue = newValue?.signum()
-//        }
-//        get { storedValue }
-//    }
-//    init(_ value: Int?) {
-//        self.value = value
-//    }
-//}
+enum setBackground: Int, CaseIterable {
+    case white = -1, yellow, black
+    
+    func getColor() -> Color {
+        switch self {
+        case .white:
+            return Color.white
+        case .yellow:
+            return Color.yellow
+        case .black:
+            return Color.black
+        }
+    }
+}

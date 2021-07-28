@@ -19,13 +19,24 @@ struct DrawingConstants {
     static let paddingBetweenCards: CGFloat = 3
     static let cardLineWidth: CGFloat = 2
     static let selectedCardLineWidth: CGFloat = 2
+    static let cardBackColor = Color.gray
     static let cardBorderColor = Color.gray
     static let selectedCardBorderColor = Color.black
+    static let selectedCardBorderColorBlackCard = Color.white
     static let selectedCardShadowColor = Color.gray
     static let selectedCardShadowRadius: CGFloat = 2
     static let selectedCardShadowOffsetX: CGFloat = 1.5
     static let selectedCardShadowOffsetY: CGFloat = 1.5
     static let minCardWidth: CGFloat = 40
+    static let undealtHeight: CGFloat = 80
+    static let undealtWidth = undealtHeight * cardAspectRatio
+    static let totalDeckOffset: CGFloat = 10
+    static let maxDeckRotationAngle: Double = 10.0
     // text constants
     static let messageFontColor = Color.orange
+    // annimation constants
+    static let defaultAnimationDuration: Double = 2
+    static let dealDuration: Double = 0.25
+    static let flipDuration: Double = 0.5
+    static let totalDealDelayDuration: Double = 0.75
 }

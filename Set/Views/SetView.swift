@@ -75,6 +75,7 @@ struct SetView_Previews: PreviewProvider {
             shape: setShape.squiggle,
             shading: setShading.striped,
             number: setNumber.three,
+            background: setBackground.white,
             isSelected: true,
             isDisplayed: true)
         SetView(card: currentCard)

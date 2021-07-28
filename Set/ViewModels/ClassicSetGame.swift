@@ -12,14 +12,17 @@ class ClassicSetGame: ObservableObject {
     typealias Card = SetGame<ClassicCard>.Card
     
     @Published private var model: SetGame<ClassicCard>
-    @Published var noCardsLeft: Bool
     @Published var totalSetsFound: Int = 0
-    @Published var matchFound = false
-    @Published var notRealMatch = false
-    @Published var winner = false
-    @Published var gameOver = false
+    @Published var userMessage = ""
+    @Published var isMatchFound = false
+    @Published var isNotTrueMatch = false
     
-    let numberOfFeatures = 4
+    @Published var dealt = Set<Int>()
+    
+    var isGameWon = false
+    var isGameOver = false
+    
+    let numberOfFeatures: Int
     let numberOfCardsPerMatch = 3
     var numberOfPossibleSets: Int {
         numberOfCardsPerMatch ^ (numberOfFeatures - 1)
@@ -38,12 +41,13 @@ class ClassicSetGame: ObservableObject {
         var shape: setShape
         var shading: setShading
         var number: setNumber
+        var background: setBackground
         
         var isSelected = false
         var isDisplayed = false
-        
     }
     
+    private let defaultClassicCard = ClassicCard(color: .red, shape: .oval, shading: .solid, number: .one, background: .white)
     private var classicCardList: [ClassicCard]
     
     //MARK: Debugger(s)
@@ -66,20 +70,38 @@ class ClassicSetGame: ObservableObject {
     
     //MARK: Initializer(s)
     
-    init?() {
-        self.noCardsLeft = false
+    init?(numberOfFeatures: Int) {
+        if numberOfFeatures > 2 && numberOfFeatures < 6 {
+            self.numberOfFeatures = numberOfFeatures
+        } else { // default to medium difficulty
+            self.numberOfFeatures = 4
+        }
+        // number of features must be defined first
+        // NEEDS TO BE UPDATED TO SUPPORT MULTIPLE NUMBER OF FEATURES!
         
-        classicCardList = []
-        for color in setColor.allCases {
-            for shape in setShape.allCases {
-                for shading in setShading.allCases {
-                    for number in setNumber.allCases {
-                        classicCardList.append(ClassicCard(color: color, shape: shape, shading: shading, number: number))
+        classicCardList = [] // ClassicSetGame.buildDeck()
+        
+        for shape in setShape.allCases {
+            for number in setNumber.allCases {
+                for color in setColor.allCases {
+                    if numberOfFeatures > 3 {
+                        for shading in setShading.allCases {
+                            if numberOfFeatures > 4 {
+                                for background in setBackground.allCases {
+                                    classicCardList.append(ClassicCard(color: color, shape: shape, shading: shading, number: number, background: background))
+                                }
+                            } else {
+                                classicCardList.append(ClassicCard(color: color, shape: shape, shading: shading, number: number, background: defaultClassicCard.background))
+                            }
+                        }
+                    } else {
+                        classicCardList.append(ClassicCard(color: color, shape: shape, shading: defaultClassicCard.shading, number: number, background: defaultClassicCard.background))
                     }
                 }
             }
         }
         
+        self.dealt = []
         let numberOfCards = classicCardList.count
         self.model = ClassicSetGame.createSetGame(numberOfCards: numberOfCards, cardList: classicCardList)
         // shuffle the deck so a new game doesn't always produce the same organized cards
@@ -88,9 +110,7 @@ class ClassicSetGame: ObservableObject {
         
         // pick out which cards should be displayed initially
         displayInitialCards()
-        
-        noCardsLeft = allCardsDisplayed()
-        
+        flipCardsFaceUp()
     }
     
     private static func createSetGame(numberOfCards: Int, cardList: [ClassicCard]) -> SetGame<ClassicCard> {
@@ -98,6 +118,168 @@ class ClassicSetGame: ObservableObject {
         return SetGame<ClassicCard>(numberOfCards: numberOfCards) { cardIndex in
             shuffledCardList[cardIndex]
         }
+    }
+    
+//    private static func buildDeck() -> [ClassicCard] {
+//        var cardList: [ClassicCard] = []
+//
+//
+//        return cardList
+//    }
+    
+    //MARK: - Method(s)
+    
+    private func shuffleCards() {
+        model.shuffleCards()
+    }
+    
+    private func toggleIsDisplayed(cardID: Int) {
+        if var newCardContent = cards.first(where: { $0.id == cardID })?.content {
+            newCardContent.isDisplayed.toggle()
+            model.changeCardContent(cardID: cardID, newContent: newCardContent)
+        }
+    }
+    
+    func displayInitialCards() {
+        var maxIndex = numberOfInitiallyDisplayedCards
+        if maxIndex > cards.count { maxIndex = cards.count }
+        dealt = []
+        for cardIndex in 0..<maxIndex {
+            deal(cards[cardIndex])
+        }
+    }
+    
+    private func toggleIsSelected(cardID: Int) {
+        if var newCardContent = cards.first(where: { $0.id == cardID })?.content {
+            newCardContent.isSelected.toggle()
+            model.changeCardContent(cardID: cardID, newContent: newCardContent)
+        }
+    }
+    
+    private func resetCards() {
+        for card in cards {
+            var newContent = card.content
+            newContent.isSelected = false
+            model.changeCardContent(cardID: card.id, newContent: newContent)
+        }
+    }
+    
+    private func deal(_ card: ClassicSetGame.Card) {
+        dealt.insert(card.id)
+    }
+    
+    private func undeal(cardID: Int) {
+        if dealt.contains(cardID) {
+            dealt.remove(cardID)
+        }
+    }
+    
+    func isUndealt(_ card: ClassicSetGame.Card) -> Bool {
+        !dealt.contains(card.id) && !card.isMatched
+    }
+    
+    func isDealt(_ card: ClassicSetGame.Card) -> Bool {
+        dealt.contains(card.id) && !card.isMatched
+    }
+    
+    func isMatched(_ card: ClassicSetGame.Card) -> Bool {
+        card.isMatched
+    }
+    
+    func isDisplayed(_ card: ClassicSetGame.Card) -> Bool {
+        card.content.isDisplayed
+    }
+    
+    private func doCardsMatch(_ cardsToAssess: [Card]) -> Bool {
+        
+        // NEEDS TO BE UPDATED TO SUPPORT MULTIPLE NUMBER OF FEATURES!
+        
+        var featureCount = Array(repeating: 0, count: numberOfFeatures)
+        // featureCount[0] represents shapeCount
+        // featureCount[1] represents numberCount
+        // featureCount[2] represents colorCount
+        // featureCount[3] represents shadingCount
+        
+        // since the enums are all assigned numbers -1, 0, & +1,
+        // can sum for the numberOfCardsPerMatch cards and
+        // they are either all same or all different if the sum
+        // is -numberOfCardsPerMatch, 0, or +numberOfCardsPerMatch
+        for card in cardsToAssess {
+            featureCount[0] += card.content.shape.rawValue
+            featureCount[1] += card.content.number.rawValue
+            if numberOfFeatures > 2 {
+                featureCount[2] += card.content.color.rawValue
+                if numberOfFeatures > 3 {
+                    featureCount[3] += card.content.shading.rawValue
+                }
+                if numberOfFeatures > 4 {
+                    featureCount[4] += card.content.background.rawValue
+                }
+            }
+        }
+        
+        for count in featureCount {
+            if !(count == -numberOfCardsPerMatch || count == 0 || count == +numberOfCardsPerMatch) {
+                // if count does not equal -numberOfCardsPerMatch, 0, or +numberOfCardsPerMatch,
+                // then these cards don't match, regardless of if other features match
+                return false
+            }
+        }
+        return true
+    }
+    
+    private func checkForGameOver() {
+        // not at all generic, breaks if the number of cards per set is not 3!!!
+        // need to convert to generic by recursion
+        var setFound = false
+        
+        var cardsForCheck: [Card] = []
+        let remainingCards = cards.filter({ !($0.isMatched) }).sorted(by: { $0.id < $1.id })
+        cardMatchLooper(cardList: remainingCards)
+        isGameOver = !setFound
+        
+        func cardMatchLooper(cardList: [Card]) {
+            if !setFound {
+                if cardsForCheck.count < numberOfCardsPerMatch {
+                    for card in cardList {
+                        if !setFound {
+                            cardsForCheck.append(card)
+                            let remainingCardList = cardList.filter({$0.id > card.id})
+                            cardMatchLooper(cardList: remainingCardList)
+                        }
+                    }
+                } else {
+                    if doCardsMatch(cardsForCheck) {
+                        setFound = true
+                        cardsForCheck = []
+                    } else {
+                        cardsForCheck.removeLast()
+                        if cardList.isEmpty {
+                            cardsForCheck.removeLast()
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    private func updateUserMessage() {
+        if isGameWon {
+            userMessage = "You win! 🥳"
+        } else if isGameOver {
+            userMessage = "Game over 😭"
+        } else if isMatchFound {
+            userMessage = "A match 🤗"
+        } else if isNotTrueMatch {
+            userMessage = "Not a match 😢"
+        } else {
+            userMessage = ""
+        }
+    }
+    
+    private func areAllCardsDisplayed() -> Bool {
+        !cards.filter(isUndealt).isEmpty
     }
     
     //MARK: - Intent(s)
@@ -110,198 +292,79 @@ class ClassicSetGame: ObservableObject {
         toggleIsSelected(cardID: card.id)
         (matchedCardIDs, resetSelectedCards) = model.choose(card, numberOfCardsPerMatch: numberOfCardsPerMatch) {selectedCardIDs in
             // implement assessMatch()
-            // for reference: four options are color, shape, shading, & number
-            var featureCount = Array(repeating: 0, count: numberOfFeatures)
-            // featureCount[0] represents colorCount
-            // featureCount[1] represents shapeCount
-            // featureCount[2] represents shadingCount
-            // featureCount[3] represents numberCount
             
             // need to get the 3 cards to do an assessment
-            let selectedCards = cards.filter({ card in
-                var isFiltered = false
-                for cardID in selectedCardIDs {
-                    if card.id == cardID { isFiltered = true }
-                }
-                return isFiltered
-            })
+            let selectedCards = cards.filter({card in !selectedCardIDs.filter({$0 == card.id}).isEmpty })
             
-            // since the enums are all assigned numbers -1, 0, & +1,
-            // can sum for the numberOfCardsPerMatch cards and
-            // they are either all same or all different if the sum
-            // is -numberOfCardsPerMatch, 0, or +numberOfCardsPerMatch
-            for card in selectedCards {
-                featureCount[0] += card.content.color.rawValue
-                featureCount[1] += card.content.shape.rawValue
-                featureCount[2] += card.content.shading.rawValue
-                featureCount[3] += card.content.number.rawValue
-            }
-            
-            for count in featureCount {
-                if !(count == -numberOfCardsPerMatch || count == 0 || count == +numberOfCardsPerMatch) {
-                    // if count does not equal -numberOfCardsPerMatch, 0, or +numberOfCardsPerMatch,
-                    // then these cards don't match, regardless of if other features match
-                    return false
-//                    return true // only used for debugging of game over
-                }
-            }
-            return true
+            return doCardsMatch(selectedCards)
+//            return true // just for debug purposes!
         }
         
         if !matchedCardIDs.isEmpty {
-            matchFound = true
+            isMatchFound = true
             for cardID in matchedCardIDs {
                 toggleIsSelected(cardID: cardID)
                 toggleIsDisplayed(cardID: cardID)
+                undeal(cardID: cardID)
             }
             totalSetsFound += 1
-            if numberOfCurrentlyDisplayedCards < numberOfInitiallyDisplayedCards {
-                drawCards()
-            }
+//            if numberOfCurrentlyDisplayedCards < numberOfInitiallyDisplayedCards {
+//                drawCards()
+//                flipCardsFaceUp()
+//            }
             if numberOfCurrentlyDisplayedCards == 0 {
                 // winner!
-                winner = true
+                isGameWon = true
             }
         } else {
-            matchFound = false
-            notRealMatch = false
+            isMatchFound = false
+            isNotTrueMatch = false
         }
         
         if resetSelectedCards {
             resetCards()
-            notRealMatch = !matchFound
+            isNotTrueMatch = !isMatchFound
+            checkForGameOver()
         }
         
-        checkForGameOver()
-        
-//        print("--- selected card after all processing ---")
-//        printCard(card.content, terminator: "")
-//        print(", id: \(card.id)", terminator: "")
-//        print(", matched?: \(card.isMatched)")
+        updateUserMessage()
     }
     
     func newGame() {
         let numberOfCards = classicCardList.count
         model = ClassicSetGame.createSetGame(numberOfCards: numberOfCards, cardList: classicCardList)
         shuffleCards()
-        displayInitialCards()
-        noCardsLeft = false
-        matchFound = false
-        notRealMatch = false
-        gameOver = false
-        winner = false
+        flipCardsFaceUp(false)
+        isMatchFound = false
+        isNotTrueMatch = false
+        isGameOver = false
+        isGameWon = false
+        updateUserMessage()
         totalSetsFound = 0
-    }
-    
-    func shuffleCards() {
-        model.shuffleCards()
-    }
-    
-    func toggleIsDisplayed(cardID: Int) {
-        if var newCardContent = cards.first(where: { $0.id == cardID })?.content {
-            newCardContent.isDisplayed.toggle()
-            model.changeCardContent(cardID: cardID, newContent: newCardContent)
-        }
-    }
-    
-    func displayInitialCards() {
-        var maxIndex = numberOfInitiallyDisplayedCards
-        if maxIndex > cards.count { maxIndex = cards.count }
-        for cardIndex in 0..<maxIndex {
-            toggleIsDisplayed(cardID: cards[cardIndex].id)
-        }
-    }
-    
-    func toggleIsSelected(cardID: Int) {
-        if var newCardContent = cards.first(where: { $0.id == cardID })?.content {
-            newCardContent.isSelected.toggle()
-            model.changeCardContent(cardID: cardID, newContent: newCardContent)
-        }
-    }
-    
-    func resetCards() {
-        for card in cards {
-            var newContent = card.content
-            newContent.isSelected = false
-            model.changeCardContent(cardID: card.id, newContent: newContent)
-        }
-    }
-    
-    func checkForGameOver() {
-        var checkBool = Array(repeating: Array(repeating: false, count: numberOfCardsPerMatch), count: numberOfFeatures)
-        
-        let remainingCards = cards.filter({ !($0.isMatched) })
-        for card in remainingCards {
-            switch card.content.color {
-            case .green:
-                checkBool[0][0] = true
-            case .purple:
-                checkBool[0][1] = true
-            case .red:
-                checkBool[0][2] = true
-            }
-            switch card.content.shape {
-            case .diamond:
-                checkBool[1][0] = true
-            case .oval:
-                checkBool[1][1] = true
-            case .squiggle:
-                checkBool[1][2] = true
-            }
-            switch card.content.shading {
-            case .open:
-                checkBool[2][0] = true
-            case .solid:
-                checkBool[2][1] = true
-            case .striped:
-                checkBool[2][2] = true
-            }
-            switch card.content.number {
-            case .one:
-                checkBool[3][0] = true
-            case .two:
-                checkBool[3][1] = true
-            case .three:
-                checkBool[3][2] = true
-            }
-        }
-        
-        var checkFeatureBool = Array(repeating: false, count: numberOfFeatures)
-        for index in 0..<numberOfFeatures {
-            let check0 = checkBool[index][0]
-            let check1 = checkBool[index][1]
-            let check2 = checkBool[index][2]
-            checkFeatureBool[index] = (check0 && check1 && check2) || (!check0 && !check1 && !check2)
-        }
-        
-        gameOver = !(checkFeatureBool[0] && checkFeatureBool[1] && checkFeatureBool[2] && checkFeatureBool[3])
-        
-        print("--- checkBool ---")
-        print(checkBool)
-        print("--- tempArray ---")
-        print(checkFeatureBool)
-        print("--- gameOver ---")
-        print(gameOver)
-        
-    }
-    
-    func allCardsDisplayed() -> Bool {
-        if cards.contains(where: { !($0.content.isDisplayed) && !($0.isMatched) }) {
-            return false
-        } else {
-            return true
-        }
+//        dealt = []
+        displayInitialCards()
     }
     
     func drawCards() {
         // for loop over numberOfCards where each time it finds the first card,
         // that isDisplayed == false and isMatched == false, it will toggle isDisplayed
         for _ in 1...numberOfCardsPerDraw {
-            if let cardID = cards.first(where: { !($0.content.isDisplayed) && !($0.isMatched) })?.id {
-                toggleIsDisplayed(cardID: cardID)
-            } else { // no cards left to draw
-                noCardsLeft = true
+            drawNextCard()
+        }
+    }
+    
+    func drawNextCard() {
+        if let card = cards.first(where: { !isDealt($0) && !$0.isMatched }) {
+            deal(card)
+        }
+    }
+    
+    func flipCardsFaceUp(_ isUp: Bool = true) {
+        for card in cards.filter(isDealt) {
+            if card.content.isDisplayed == !isUp {
+                toggleIsDisplayed(cardID: card.id)
             }
         }
     }
+    
 }
