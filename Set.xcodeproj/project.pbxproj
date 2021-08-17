@@ -12,6 +12,8 @@
 		D920DE3126A2440900C6136C /* DifficultyButtonBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3026A2440900C6136C /* DifficultyButtonBackground.swift */; };
 		D920DE3326A35D7D00C6136C /* AnimationTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3226A35D7D00C6136C /* AnimationTester.swift */; };
 		D920DE3526A36A7700C6136C /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = D920DE3426A36A7700C6136C /* Cardify.swift */; };
+		D934411B26C4AC7D00928223 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D934411A26C4AC7D00928223 /* Shimmer.swift */; };
+		D95551D126C4DE8C002B205C /* Shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95551D026C4DE8C002B205C /* Shake.swift */; };
 		D9BB667D2697DECF0006D3EA /* SetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB667C2697DECF0006D3EA /* SetApp.swift */; };
 		D9BB667F2697DECF0006D3EA /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BB667E2697DECF0006D3EA /* GameView.swift */; };
 		D9BB66812697DED00006D3EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9BB66802697DED00006D3EA /* Assets.xcassets */; };
@@ -38,6 +40,8 @@
 		D920DE3026A2440900C6136C /* DifficultyButtonBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyButtonBackground.swift; sourceTree = "<group>"; };
 		D920DE3226A35D7D00C6136C /* AnimationTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationTester.swift; sourceTree = "<group>"; };
 		D920DE3426A36A7700C6136C /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
+		D934411A26C4AC7D00928223 /* Shimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shimmer.swift; sourceTree = "<group>"; };
+		D95551D026C4DE8C002B205C /* Shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shake.swift; sourceTree = "<group>"; };
 		D9BB66792697DECF0006D3EA /* Set.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Set.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BB667C2697DECF0006D3EA /* SetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetApp.swift; sourceTree = "<group>"; };
 		D9BB667E2697DECF0006D3EA /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				D9BB669E269C10110006D3EA /* CardView.swift */,
 				D920DE3226A35D7D00C6136C /* AnimationTester.swift */,
 				D9BB66A2269C16D20006D3EA /* AspectVGrid.swift */,
+				D934411A26C4AC7D00928223 /* Shimmer.swift */,
+				D95551D026C4DE8C002B205C /* Shake.swift */,
 				D9BB66972698D1F30006D3EA /* SetView.swift */,
 				D9BB66A0269C10EF0006D3EA /* DrawingConstants.swift */,
 				D9BB66922697ECDA0006D3EA /* Shapes */,
@@ -247,7 +253,9 @@
 				D9D0AF5226AF868A008E533F /* UtilityExtensions.swift in Sources */,
 				D9BB66982698D1F30006D3EA /* SetView.swift in Sources */,
 				D9BB66A3269C16D20006D3EA /* AspectVGrid.swift in Sources */,
+				D95551D126C4DE8C002B205C /* Shake.swift in Sources */,
 				D920DE3526A36A7700C6136C /* Cardify.swift in Sources */,
+				D934411B26C4AC7D00928223 /* Shimmer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

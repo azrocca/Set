@@ -5,6 +5,8 @@
 //  Created by Rocca on 7/16/21.
 //
 
+// Code written with Daniel!  His first Swift code!
+
 import SwiftUI
 
 struct DifficultyButton: View {
@@ -15,15 +17,13 @@ struct DifficultyButton: View {
         GeometryReader { geometry in
             HStack {
                 Spacer()
-                ZStack {
-                    Text(buttonText)
-                        .foregroundColor(textColor)
-                        .bold()
-                        .font(calculateFontSize(in: geometry.size))
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .padding()
-                        .background(DifficultyButtonBackground())
-                }
+                Text(buttonText)
+                    .foregroundColor(textColor)
+                    .bold()
+                    .font(calculateFontSize(in: geometry.size))
+                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .padding()
+                    .background(DifficultyButtonBackground())
                 Spacer()
             }
         }

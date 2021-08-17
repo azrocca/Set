@@ -11,11 +11,11 @@ struct CardView: View {
     let card: ClassicSetGame.ClassicCard
     
     var body: some View {
-            ZStack {
-                SetView(card: card)
-                    .scaleEffect(DrawingConstants.shapeScaleFactor)
-                    .cardify(cardBackgroundColor: card.background.getColor(), isSelected: card.isSelected, isDisplayed: card.isDisplayed)
-            }
+        ZStack {
+            SetView(card: card)
+                .scaleEffect(DrawingConstants.shapeScaleFactor)
+                .cardify(cardBackgroundColor: card.background.getColor(), isSelected: card.isSelected, isDisplayed: card.isDisplayed)
+        }
     }
 }
 

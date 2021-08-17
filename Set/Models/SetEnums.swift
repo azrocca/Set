@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+protocol Setable: CaseIterable & Equatable {
+    var numberOfOptions: Int { get }
+}
+
 enum setColor: Int, CaseIterable {
     case red = -1, green, purple
     

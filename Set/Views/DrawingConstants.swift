@@ -19,10 +19,11 @@ struct DrawingConstants {
     static let paddingBetweenCards: CGFloat = 3
     static let cardLineWidth: CGFloat = 2
     static let selectedCardLineWidth: CGFloat = 2
-    static let cardBackColor = Color.gray
+    static let cardBackColor = Color(#colorLiteral(red: 0.7797397131, green: 0.8400355774, blue: 0.9244036118, alpha: 1))
     static let cardBorderColor = Color.gray
     static let selectedCardBorderColor = Color.black
     static let selectedCardBorderColorBlackCard = Color.white
+    static let selectedCardDarkModeBorderColor = Color(#colorLiteral(red: 0, green: 0.920794487, blue: 0.9735403657, alpha: 1))
     static let selectedCardShadowColor = Color.gray
     static let selectedCardShadowRadius: CGFloat = 2
     static let selectedCardShadowOffsetX: CGFloat = 1.5
@@ -39,4 +40,5 @@ struct DrawingConstants {
     static let dealDuration: Double = 0.25
     static let flipDuration: Double = 0.5
     static let totalDealDelayDuration: Double = 0.75
+    static let notMatchShakeRotationDegrees: Double = 5
 }

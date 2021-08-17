@@ -9,18 +9,15 @@ import SwiftUI
 
 struct Cardify: ViewModifier {
     
-    let cardBorderWidth: CGFloat
-    let selectedBorderColor: Color
-    let cardBorderColor: Color
-    let cardBackgroundColor: Color
+    @Environment(\.colorScheme) var colorScheme
     
+    let cardBorderWidth: CGFloat
+    let cardBackgroundColor: Color
     var isSelected: Bool
     var isDisplayed: Bool
     
     init(cardBackgroundColor: Color, isSelected: Bool, isDisplayed: Bool) {
         self.cardBorderWidth = isSelected ? DrawingConstants.selectedCardLineWidth : DrawingConstants.cardLineWidth
-        self.selectedBorderColor = (cardBackgroundColor == .black) ? DrawingConstants.selectedCardBorderColorBlackCard : DrawingConstants.selectedCardBorderColor
-        self.cardBorderColor = isSelected ? selectedBorderColor : DrawingConstants.cardBorderColor
         self.cardBackgroundColor = cardBackgroundColor
         self.isSelected = isSelected
         self.isDisplayed = isDisplayed
@@ -29,7 +26,13 @@ struct Cardify: ViewModifier {
     let shape = RoundedRectangle(cornerRadius: DrawingConstants.cardCornerRadius, style: .continuous)
     
     func body(content: Content) -> some View {
-        ZStack {
+        
+        let selectedCardDarkModeBorderColor = DrawingConstants.selectedCardDarkModeBorderColor
+        let selectedCardLiteModeBorderColor = (cardBackgroundColor == .black) ? DrawingConstants.selectedCardBorderColorBlackCard : DrawingConstants.selectedCardBorderColor
+        let selectedBorderColor = (colorScheme == .light) ? selectedCardLiteModeBorderColor : selectedCardDarkModeBorderColor
+        let cardBorderColor = isSelected ? selectedBorderColor : DrawingConstants.cardBorderColor
+        
+        return ZStack {
             shape
                 .fill()
                 .foregroundColor(cardBackgroundColor)

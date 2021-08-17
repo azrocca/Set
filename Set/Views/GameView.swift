@@ -11,7 +11,6 @@ struct GameView: View {
     let numberOfFeatures: Int
     @ObservedObject var game: ClassicSetGame
     @Namespace private var dealingNamespace
-//    @Namespace private var discardNamespace
     
     init(numberOfFeatures: Int) {
         self.numberOfFeatures = numberOfFeatures
@@ -63,7 +62,7 @@ struct GameView: View {
             let dealtCards = game.cards.filter(game.isDealt)
             AspectVGrid(items: dealtCards, aspectRatio: DrawingConstants.cardAspectRatio, minWidth: DrawingConstants.minCardWidth) { card in
                 CardView(card: card.content)
-                    .modifier(CardAnimation(isSelected: card.content.isSelected, isDisplayed: card.content.isDisplayed, isMatchFound: game.isMatchFound, isNotTrueMatch: game.isNotTrueMatch))
+                    .cardAnimation(isSelected: card.content.isSelected, isDisplayed: card.content.isDisplayed, isMatchFound: game.isMatchFound, isNotTrueMatch: game.isNotTrueMatch)
                     .padding(DrawingConstants.paddingBetweenCards)
                     .zIndex(zIndex(of: card))
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace, isSource: true)
@@ -79,23 +78,27 @@ struct GameView: View {
                     }
             }
             cardStackBody
-//                .padding(.horizontal)
                 .padding(.top)
         }
-        .navigationBarHidden(true)
-        //        .navigationBarBackButtonHidden(true)
-        //        .navigationBarTitle("", displayMode: .inline)
+//        .navigationBarHidden(true)
+//        .navigationBarBackButtonHidden(true)
+        .navigationBarTitle("", displayMode: .inline)
     }
     
     var deckBody: some View {
         ZStack(alignment: .center) {
             ForEach(game.cards.filter(game.isUndealt)) { card in
                 CardView(card: card.content)
-                    .modifier(CardAnimation(isSelected: false, isDisplayed: false, isMatchFound: false, isNotTrueMatch: false))
+                    // used to put cards face down
+                    .cardAnimation(isSelected: false, isDisplayed: false, isMatchFound: false, isNotTrueMatch: false)
+                    // have to define a frame as no longer inside AspectVGrid
                     .frame(width: DrawingConstants.undealtWidth, height: DrawingConstants.undealtHeight)
+                    // assign slight offset & rotation to give deck a more natural look and not perfectly stacked
                     .offset(cardOffset(card))
                     .rotationEffect(cardRotation(card))
+                    // stack cards by their id
                     .zIndex(zIndex(of: card))
+                    // match to cards displayed
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace, isSource: true)
             }
             Text("All cards\ndealt")
@@ -104,6 +107,7 @@ struct GameView: View {
                 .opacity(game.cards.filter(game.isUndealt).isEmpty ? 1 : 0)
         }
         .onTapGesture {
+            // draw numberOfCardsPerDraw out on tap
             for index in 1...game.numberOfCardsPerDraw {
                 withAnimation(dealDrawAnimation(index)) {
                     game.drawNextCard()
@@ -116,11 +120,16 @@ struct GameView: View {
         ZStack(alignment: .center) {
             ForEach(game.cards.filter(game.isMatched)) { card in
                 CardView(card: card.content)
+                    // used to guarantee cards stay face up
                     .modifier(CardAnimation(isSelected: false, isDisplayed: true, isMatchFound: false, isNotTrueMatch: false))
+                    // have to define a frame as no longer inside AspectVGrid
                     .frame(width: DrawingConstants.undealtWidth, height: DrawingConstants.undealtHeight)
+                    // assign slight offset & rotation to give deck a more natural look and not perfectly stacked
                     .offset(cardOffset(card))
                     .rotationEffect(cardRotation(card))
+                    // stack cards by their id
                     .zIndex(zIndex(of: card))
+                    // match to cards displayed
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace, isSource: true)
             }
         }
@@ -128,8 +137,11 @@ struct GameView: View {
     
     var newGame: some View {
         Button("New game") {
+            // newGame & flipCardsFaceUp implemented in different functions for animation purposes
             game.newGame()
-            game.flipCardsFaceUp()
+            withAnimation {
+                game.flipCardsFaceUp()
+            }
         }
     }
     

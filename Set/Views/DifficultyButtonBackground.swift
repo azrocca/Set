@@ -5,6 +5,8 @@
 //  Created by Rocca on 7/16/21.
 //
 
+// Code written with Daniel!  His first Swift code!
+
 import SwiftUI
 
 struct DifficultyButtonBackground: View {

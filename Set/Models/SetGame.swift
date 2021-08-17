@@ -43,6 +43,7 @@ struct SetGame<CardContent> where CardContent: Equatable {
             } else {
                 selectedCardIDs.removeAll(where: {$0 == card.id} )
             }
+            // TODO: would need to move this into a separate function to animate cards properly before moving to discard pile
             if selectedCardIDs.count >= numberOfCardsPerMatch { // once you have enough cards
                 // assess match, if matched change isMatched property for each card
                 if assessMatch(selectedCardIDs) {

@@ -11,8 +11,8 @@ import SwiftUI
 struct SetApp: App {
     var body: some Scene {
         WindowGroup {
-//            DifficultyMenu()
-            GameView(numberOfFeatures: 4)
+            DifficultyMenu()
+//            GameView(numberOfFeatures: 4)
 //            AnimationTester()
         }
     }
